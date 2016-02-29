@@ -1,0 +1,23 @@
+<div class="article">
+    <div class="article-header">
+        <img class="img-rounded author-avatar"
+             src="{{ article.author.gravatar(size=50) }}">
+        <span class="label label-primary author-name">
+            {{ article.author.nickname }}
+        </span>
+        <span class="article-timestamp pull-right">{{ article.timestamp }}</span>
+    </div>
+    <div class="article-body">
+        <div class="article-title">
+            <span class="article-category">
+                [{{ article.category.category }}]
+            </span>
+            <span class="article-topic">
+                {{ article.topic.topic }}
+            </span>
+        </div>
+        <div class="article-content-wrapper">
+            <textarea readonly class="article-content" rows="15" cols="">{{ article.content }}</textarea>
+        </div>
+    </div>
+</div>

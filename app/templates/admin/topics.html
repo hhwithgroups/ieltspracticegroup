@@ -1,0 +1,50 @@
+{% extends "admin/base.html" %}
+
+{% block admin_content %}
+	<form method="POST" class="admin-category-form" role="form" action="{{ url_for('admin_add_category') }}">
+        {{ cat_form.csrf_token }}
+        <span>{{ cat_form.category.label }}</span>
+        <span>{{ cat_form.category }}</span>
+        <span>{{ cat_form.submit }}</span>
+	</form>
+    {% if categories %}
+    <table  class="table table-responsive">
+        {% for c in categories %}
+        <tr>
+            <td style="width: 30%">
+                <a href="{{ url_for('admin_topics', category_id=c.id) }}">
+                {% if c.id == current_category.id %}
+                <span class="glyphicon glyphicon-check"></span>
+                {% else %}
+                <span class="glyphicon glyphicon-unchecked"></span>
+                {% endif %}
+                <span>{{ c.category }}</span>
+                </a>
+            </td>
+            <td style="width: 30%">{{ c.topics.filter_by(deleted=False).count()}} topics</td>
+            <td><a href="{{ url_for('admin_del_category', category_id=c.id) }}"><span class="glyphicon glyphicon-remove"></span>Delete</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <label>Topics of {{ current_category.category }}:</label>
+    <form method="post" role="form" action="{{ url_for('admin_add_topic', category_id=current_category.id) }}">
+        {{ wtf.quick_form(topic_form) }}
+    </form>
+    <table class="table table-responsive">
+        {% for t in topics %}
+        <tr>
+            <td style="width:25%">Issue No.{{ t.issue_number }}</td>
+            <td>{{ t.topic }}</td>
+            <td>{{ t.articles.count() }} articles</td>
+            <td style="width:25%"><a href="{{ url_for('admin_del_topic', category_id=current_category.id, topic_id=t.id) }}"><span class="glyphicon glyphicon-remove"></span>Delete</a></td>
+        </tr>
+        {% endfor %}
+        </table>
+    {% if pagination %}
+    <div class="pagination">
+        {{ macros.pagination_widget(pagination, 'admin_topics', category_id=current_category.id) }}
+    </div>
+    {% endif %}
+    {% endif %}
+{% endblock %}

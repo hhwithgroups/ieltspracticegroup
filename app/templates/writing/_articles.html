@@ -1,0 +1,16 @@
+<div class="article-list">
+    {% for article in articles %}
+    <div class="article-wrapper">
+
+        {% include "writing/_article.html" %}
+
+        <div class="article-footer">
+            <span class="article-comment-label">
+                <a href="{{ url_for('writing_view_article', id=article.id) }}">
+                    Comment({{ article.comment_count }}) / Annotations({{ article.annotation_count }})
+                </a>
+            </span>
+        </div>
+    </div>
+    {% endfor %}
+</div>

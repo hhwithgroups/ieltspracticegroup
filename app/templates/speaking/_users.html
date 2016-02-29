@@ -1,0 +1,76 @@
+<div class="user-list">
+	{% for p in users %}
+	<div class="user-profile media">
+		<div class="user-avatar pull-left">
+			<img class="img-rounded" src="{{ p[0].gravatar(size=50) }}">
+		</div>
+		<div class="user-info media-body">
+			<span class="label label-primary">{{ p[0].nickname }}</span>
+			<div class="user-description">{{ p[0].description }}</div>
+			<table class="user-calendar table table-condensed text-center">
+			<tr>
+				<th><span class="label label-default center-block">My Time</span></th>
+				{% for w in ["M", "T", "W", "T", "F"] %}
+				<th><span class="label label-default center-block">{{ w }}</span></th>
+				{% endfor %}
+				<th><span class="label label-info center-block">S</span></th>
+				<th><span class="label label-info center-block">S</span></th>
+			</tr>
+			{% for t, index in [("Morning", 0), ("Afternoon", 1), ("Night", 2)] %}
+			<tr>
+				<td class="text-left">{{ t }}</td>
+				{% for i in range(index, 21, 3) %}
+				{% if p[1][i] == 1 %}
+					{% if p[2][i] == 1 %}
+					<td class="success">
+					{% else %}
+					<td>
+					{% endif %}
+					<span class="glyphicon glyphicon-ok"></span>
+					</td>
+				{% else %}
+					<td></td>
+				{% endif %}
+				{% endfor %}
+			</tr>
+			{% endfor %}
+			</table>
+
+			{% if type=="friends" %}
+			<address>
+			<p><b>Email:</b> {{p[0].email}}</p>
+			<p><b>QQ:</b> {{p[0].qq}}</p>
+			<p><b>Exam Date:</b> {{ p[0].date_of_exam }}</p>
+			</address>
+			{% endif %}
+
+			<div class="user-footer">
+			{% if type=="recommendation" %}
+				<a class="btn btn-success btn-xs"
+				   href="{{ url_for('speaking_invite', nickname=p[0].nickname) }}">
+				   Invite
+				</a>
+			{% elif type=="invitation" %}
+				<a class="btn btn-success btn-xs"
+				   href="{{ url_for('speaking_accept', nickname=p[0].nickname) }}">
+				   Accept
+				</a>
+				<a class="btn btn-danger btn-xs"
+				   href="{{ url_for('speaking_decline', nickname=p[0].nickname) }}">
+				   Decline
+				</a>
+			{% elif type=="friends" %}
+				<a class="btn btn-danger btn-xs"
+				   href="{{ url_for('speaking_delete', nickname=p[0].nickname) }}">
+				   Delete
+				</a>
+			{% endif %}
+				<a class="btn btn-danger btn-xs"
+				   href="#">
+				   Report
+				</a>
+			</div>
+		</div>
+	</div>
+	{% endfor %}
+</div>

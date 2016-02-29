@@ -1,0 +1,19 @@
+{% extends "speaking/base.html" %}
+
+{% block speaking_content %}
+	{% if users %}
+		<h3>Friends</h3>
+		<p>Here are your friends, you can see their contact informations.</p>
+		
+		{% include("speaking/_users.html") %}
+		
+		{% if pagination %}
+		<div class="pagination">
+			{{ macros.pagination_widget(pagination, 'speaking_recommends') }}
+		</div>
+		{% endif %}
+	{% else %}
+	<p>You do not have any friends yet.</p>
+	<p>Find your practice friends in <a href="{{ url_for('speaking_recommends') }}">Recommendations</a></p>
+	{% endif %}	
+{% endblock %}

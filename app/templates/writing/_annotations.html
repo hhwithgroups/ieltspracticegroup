@@ -1,0 +1,32 @@
+<div class="anntation-list">
+    <script>
+        var annotations = {{ annotations | safe }};
+        var all_annotations = JSON.parse(annotations);
+        var current_annotation = 0;
+    </script>
+
+    <div class="annotation">
+        <div class="annotation-author">
+            <img class="img-rounded author-avatar pull-left" src="#">
+            <div class="label label-primary author-name"></div>
+            <span class="article-timestamp pull-right"></span>
+        </div>
+        <div class="annotation-body media-body"></div>
+        <div class="annotation-nav pull-right">
+            <button class="btn btn-default btn-xs prev-annotation"><</button>
+            <button class="btn btn-default btn-xs current-annotation"></button>
+            <span class="annotation-index"></span>
+            <button class="btn btn-default btn-xs next-annotation">></button>
+        </div>
+    </div>
+
+    <form class="annotation-form" method="post"
+          action="{{ url_for('writing_annotate', id=article.id) }}">
+        {{ annotation_form.csrf_token }}
+        {{ annotation_form.start }}
+        {{ annotation_form.end }}
+        <div>{{ annotation_form.content(class="annotation-form-content",
+            placeholder="Annotate on selection...") }}</div>
+        <div >{{ annotation_form.submit(class="btn btn-default annotation-form-submit") }}</div>
+    </form>
+</div>

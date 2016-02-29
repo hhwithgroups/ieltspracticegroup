@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% import "_macros.html" as macros %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block head %}
+	{{ super() }}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='writing.css') }}">
+    {% if type != "view" %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='writing.js') }}"></script>
+	<script>
+		$(document).ready(function(){
+			$("#category").change(function () {
+			    var url = "{{ url_for(endpoint) }}";
+			    gotoCatetory(url);
+			});
+			$("#issue").change(function () {
+			    var url = "{{ url_for(endpoint) }}";
+			    gotoCatAndIssue(url);
+			});
+		})
+	</script>
+    {% endif %}
+{% endblock %}
+
+{% block title %}IELTS English Club - Writing{% endblock %}
+
+{% block page_content %}
+	<div class="page-header">
+		<ul class="nav nav-tabs">
+			{% if type=="all" %}<li class="active">
+			{% else %}<li>
+			{% endif %}
+				<a href="{{ url_for('writing_all_articles') }}">All</a>
+			</li>
+			{% if type=="self" %}<li class="active">
+			{% else %}<li>
+			{% endif %}
+				<a href="{{ url_for('writing_my_articles') }}">My Articles</a>
+			</li>
+			{% if type=="commented" %}<li class="active">
+			{% else %}<li>
+			{% endif %}
+				<a href="{{ url_for('writing_commented_articles') }}">Commented</a>
+			</li>
+		</ul>
+	</div>
+	{% block writing_content %}{% endblock %}
+{% endblock %}

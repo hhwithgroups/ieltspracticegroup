@@ -1,0 +1,42 @@
+{% extends "writing/base.html" %}
+
+{% block writing_content %}
+	<div>
+        <span><label>Category: </label></span>
+        <span>
+            <select id="category" name="category">
+                <option value {% if not category_id %} selected {% endif %}>--All--</option>
+                {% for c in categories %}
+                <option value="{{ c.id }}" {% if c.id == category_id %} selected {% endif %}>{{ c.category }}</option>
+                {% endfor %}
+            </select>
+        </span>
+        <span><label>Issue: </label></span>
+        <span>
+            <select id="issue" name="issue">
+                <option value {% if not issue_number %} selected {% endif %}>--All--</option>
+                {% for t in topics %}
+                <option value="{{ t.issue_number }}"
+                        title="{{ t.topic }}"
+                        {% if t.issue_number == issue_number %} selected {% endif %}>
+                    {{ t.issue_number }}
+                </option>
+                {% endfor %}
+            </select>
+        </span>
+        {% if current_topic %}
+        <div><p><b>[{{ current_topic.category.category }}]{{ current_topic.topic }}</b></p></div>
+        {% endif %}
+    </div>
+	{% if articles %}
+		{% include("writing/_articles.html") %}
+
+		{% if pagination %}
+		<div class="pagination">
+			{{ macros.pagination_widget(pagination, 'writing_all_articles') }}
+		</div>
+		{% endif %}
+	{% else %}
+	<p>Nothing written yet...</p>
+	{% endif %}
+{% endblock %}

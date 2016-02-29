@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}IELTS English Club - Register{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+	<h1>Register</h1>
+</div>
+<div class="col-md-4">
+	<form method="POST" class="form" role="form">
+	{{ form.csrf_token }}
+	{{ wtf.form_field(form.email) }}
+	{{ wtf.form_field(form.nickname) }}
+	{{ wtf.form_field(form.password) }}
+	{{ wtf.form_field(form.password2) }}
+	{{ wtf.form_field(form.level) }}
+	{{ wtf.form_field(form.qq) }}
+	{{ wtf.form_field(form.qq_group) }}
+	{{ wtf.form_field(form.target_score) }}
+	{{ wtf.form_field(form.date_of_exam) }}
+	{{ wtf.form_field(form.exam_passed) }}
+	{{ wtf.form_field(form.description) }}
+	
+	<table class="table">
+		<caption><b>Available Time</b></caption>
+		<thead>
+		<tr>
+			<th></th><th>Morning</th><th>Afternoon</th><th>Night</th>
+		</tr>
+		</thead>
+		<tbody>
+			{% for week, timesegs in (('MON', (form.mon_morning,
+											   form.mon_afternoon,
+											   form.mon_night)),
+									  ('TUE', (form.tue_morning,
+											   form.tue_afternoon,
+											   form.tue_night)),
+									  ('WED', (form.wed_morning,
+											   form.wed_afternoon,
+											   form.wed_night)),
+									  ('THU', (form.thu_morning,
+											   form.thu_afternoon,
+											   form.thu_night)),
+									  ('FRI', (form.fri_morning,
+											   form.fri_afternoon,
+											   form.fri_night)),
+									  ('SAT', (form.sat_morning,
+											   form.sat_afternoon,
+											   form.sat_night)),
+									  ('SUN', (form.sun_morning,
+											   form.sun_afternoon,
+											   form.sun_night))) %}
+			
+			<tr>
+				<td><b>{{ week }}</b></td>
+				<td>{{ wtf.form_field(timesegs[0]) }}</td>
+				<td>{{ wtf.form_field(timesegs[1]) }}</td>
+				<td>{{ wtf.form_field(timesegs[2]) }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	
+	{{ wtf.form_field(form.submit) }}
+	</form>
+</div>
+{% endblock %}

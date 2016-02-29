@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% import "_macros.html" as macros %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block head %}
+	{{ super() }}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='admin.css') }}">
+{% endblock %}
+
+{% block title %}IELTS English Club - Admin{% endblock %}
+
+{% block page_content %}
+	<div class="page-header">
+		<ul class="nav nav-tabs">
+			{% if type=="topics" %}<li class="active">
+			{% else %}<li>
+			{% endif %}
+				<a href="{{ url_for('admin_topics') }}">Topic</a>
+			</li>
+		</ul>
+	</div>
+	{% block admin_content %}{% endblock %}
+{% endblock %}

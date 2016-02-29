@@ -1,0 +1,17 @@
+<div class="comment">
+    <div class="comment-author">
+        <img class="img-rounded author-avatar pull-left"
+             src="{{ comment.author.gravatar(size=50) }}">
+        <div class="label label-primary author-name">
+            {{ comment.author.nickname }}
+        </div>
+        <span class="article-timestamp pull-right">{{ comment.timestamp }}</span>
+    </div>
+    <div class="comment-body media-body">
+        {% for p in comment.content.split('\n') %}
+        {% if p != '' and not p.isspace() %}
+        <p class="comment-paragraph">{{ p }}</p>
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>

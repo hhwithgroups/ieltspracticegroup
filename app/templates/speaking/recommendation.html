@@ -1,0 +1,20 @@
+{% extends "speaking/base.html" %}
+{% block speaking_content %}
+	{% if users %}
+		<h3>Recommended friends</h3>
+		<p>Here are some friends we found based on your level and available time.</p>
+		<p>You can invite <b>3</b> friends per day to practice with you.</p>
+		<p>Today you can still invite <b>{{ today_invitation_cnt }}</b> friends.</p>
+		<p>You can see each other's contact information if your invitation is accepted.</p>
+		
+		{% include("speaking/_users.html") %}
+		
+		{% if pagination %}
+		<div class="pagination">
+			{{ macros.pagination_widget(pagination, 'speaking_recommends') }}
+		</div>
+		{% endif %}
+	{% else %}
+	Sorry, we could not find any friends to recommend to you.
+	{% endif %}	
+{% endblock %}

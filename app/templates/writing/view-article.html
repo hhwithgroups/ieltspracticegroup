@@ -1,0 +1,35 @@
+{% extends "writing/base.html" %}
+
+{% block writing_content %}
+    <div class="article-wrapper">
+        {% include "writing/_article.html" %}
+    </div>
+
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" {% if sub=='comment' %}class="active"{% endif %}>
+            <a href="#comment-list-wrapper"
+               aria-controls="home" role="tab" data-toggle="tab">Comments</a>
+        </li>
+        <li role="presentation" {% if sub=='annotate' %}class="active"{% endif %}>
+            <a href="#annotation-wrapper"
+               aria-controls="profile" role="tab" data-toggle="tab">Annotations</a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane {% if sub=='comment' %}active{% endif %}" id="comment-list-wrapper">
+            {% include "writing/_comments.html" %}
+        </div>
+        <div role="tabpanel" class="tab-pane {% if sub=='annotate' %}active{% endif %}" id="annotation-wrapper">
+            {% include "writing/_annotations.html" %}
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='writing.js') }}"></script>
+    <script>
+        $(document).ready(init);
+    </script>
+
+{% endblock %}
+
