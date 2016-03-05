@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 from flask.ext.wtf import Form
-from wtforms import SubmitField, SelectField, \
+from wtforms import StringField, SubmitField, SelectField, \
                     TextAreaField, BooleanField, FloatField
-from wtforms.validators import Required
+from wtforms.validators import Required, Length, ValidationError
 from wtforms.fields.html5 import DateField
-from ..models import level
+from ..models import User, level
 
     
 class ProfileForm(Form):
+    qq = StringField('QQ', validators=[Length(0, 11)])
     level = SelectField('Current Level', coerce=int, default=2, validators=[Required()])
     target_score = FloatField('Target Score')
     exam_passed = BooleanField('I have passed my IELTS exam.')
@@ -50,4 +51,11 @@ class ProfileForm(Form):
     def available_times(self, value):
         for i in range(len(self.time_segments)):
             self.time_segments[i].data = ((value >> i) & 1 == 1)
-        
+
+    def validate_qq(self, field):
+        if not field.data:
+            return
+        if not field.data.isdigit():
+            raise ValidationError('QQ must be all numbers')
+        if User.query.filter_by(qq=field.data).first():
+            raise ValidationError('QQ number already in use.')

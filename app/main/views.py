@@ -21,6 +21,7 @@ def index():
 def profile():
     form = ProfileForm()
     if form.validate_on_submit():
+        current_user.qq = form.qq.data
         current_user.level = form.level.data
         current_user.target_score = form.target_score.data
         current_user.date_of_exam = form.date_of_exam.data
@@ -31,6 +32,7 @@ def profile():
         db.session.add(current_user)
         flash(FlashMessage.UPDATE_PROFILE_SUCCESS)
         return redirect(url_for('speaking'))
+    form.qq.data = current_user.qq
     form.level.data = current_user.level
     form.target_score.data = current_user.target_score
     form.date_of_exam.data = current_user.date_of_exam
