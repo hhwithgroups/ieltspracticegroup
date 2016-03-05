@@ -47,15 +47,15 @@ class Friend(db.Model):
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
-    nickname = db.Column(db.String(64), unique=True)
-    email = db.Column(db.String(64), unique=True)
-    qq = db.Column(db.String(32), unique=True)
+    nickname = db.Column(db.String(64))
+    email = db.Column(db.String(64), default="")
+    qq = db.Column(db.String(32))
     qq_group = db.Column(db.String(32))
     level = db.Column(db.Integer)
     target_score = db.Column(db.Float, default=6)
     exam_passed = db.Column(db.Boolean, default=False)
     date_of_exam = db.Column(db.Date)
-    available_time = db.Column(db.Integer)
+    available_time = db.Column(db.Integer, default=0)
     description = db.Column(db.Text)
     password_hash = db.Column(db.String(128))
     avatar_hash = db.Column(db.String(32))
@@ -65,6 +65,8 @@ class User(UserMixin, db.Model):
     today_invitation_cnt = db.Column(db.Integer, default=0)
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
 
+    # add wechat id
+    openid1 = db.Column(db.String(40), default="")
 
     # a invitation sent from A to B
     sent_invitations = db.relationship('Invitation',
@@ -130,6 +132,10 @@ class User(UserMixin, db.Model):
 
         if self.role is None:
             self.role = Role.query.filter_by(name='User').first()
+
+    @property
+    def is_weixin_user(self):
+        return self.openid1 != ""
 
     @property
     def password(self):
