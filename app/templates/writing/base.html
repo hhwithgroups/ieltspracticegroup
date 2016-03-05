@@ -5,22 +5,6 @@
 {% block head %}
 	{{ super() }}
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='writing.css') }}">
-    {% if type != "view" %}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="{{ url_for('static', filename='writing.js') }}"></script>
-	<script>
-		$(document).ready(function(){
-			$("#category").change(function () {
-			    var url = "{{ url_for(endpoint) }}";
-			    gotoCatetory(url);
-			});
-			$("#issue").change(function () {
-			    var url = "{{ url_for(endpoint) }}";
-			    gotoCatAndIssue(url);
-			});
-		})
-	</script>
-    {% endif %}
 {% endblock %}
 
 {% block title %}IELTS English Club - Writing{% endblock %}
@@ -46,4 +30,23 @@
 		</ul>
 	</div>
 	{% block writing_content %}{% endblock %}
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+{% if type != "view" %}
+<script src="{{ url_for('static', filename='writing.js') }}"></script>
+<script>
+$(document).ready(function(){
+  $("#category").change(function () {
+    var url = "{{ url_for(endpoint) }}";
+    gotoCatetory(url);
+  });
+  $("#issue").change(function () {
+    var url = "{{ url_for(endpoint) }}";
+    gotoCatAndIssue(url);
+  });
+})
+</script>
+{% endif %}
 {% endblock %}
