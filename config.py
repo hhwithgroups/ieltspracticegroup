@@ -20,6 +20,8 @@ class Config:
     SMTP_PORT = 25,
     SMTP_USER = 'ieltsclubteam@163.com'
     SMTP_PASS = 'amkzuuojkukhwdva'
+    APP_ID = 'wxa7a1e9b980782576'
+    APP_SECRET = '79cbf1dba727d8538c95cea1c95cc89b'
 
 class ProductConfig(Config):
     SECRET_KEY = 'O6T70gazj6kInjlRgj4DlWpSdmSy4jws'
@@ -41,4 +43,4 @@ class TestConfig(Config):
     WTF_CSRF_ENABLED = False
     SECRET_KEY = 'secret'
     SQLALCHEMY_DATABASE_URI = 'mysql://yy:yyyyyyyy@127.0.0.1:3306/app_ieltspracticegroup'
-    
+

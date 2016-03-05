@@ -1,6 +1,6 @@
+# -*- coding: utf-8 -*-
 __author__ = 'wei'
 
-# -*- coding: utf-8 -*-
 from flask import request, current_app
 from flask.ext.login import UserMixin, AnonymousUserMixin
 from sqlalchemy import func
@@ -48,7 +48,7 @@ class User(UserMixin, db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     nickname = db.Column(db.String(64))
-    email = db.Column(db.String(64), default="")
+    email = db.Column(db.String(64), default='')
     qq = db.Column(db.String(32))
     qq_group = db.Column(db.String(32))
     level = db.Column(db.Integer)
@@ -66,7 +66,8 @@ class User(UserMixin, db.Model):
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
 
     # add wechat id
-    openid1 = db.Column(db.String(40), default="")
+    openid1 = db.Column(db.String(40), default='')
+
 
     # a invitation sent from A to B
     sent_invitations = db.relationship('Invitation',
@@ -135,7 +136,7 @@ class User(UserMixin, db.Model):
 
     @property
     def is_weixin_user(self):
-        return self.openid1 != ""
+        return self.openid1 != ''
 
     @property
     def password(self):

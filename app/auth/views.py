@@ -55,10 +55,76 @@ def login():
         flash(FlashMessage.LOGIN_FAILED)
     return render_template('auth/login.html', form=form)
 
+@app.route('/weixin-login', methods=['GET', 'POST'])
+def weixin_login():
+    if hasattr(current_user, 'id'):
+        return redirect('/speaking')
+    import urllib
+    app_id = urllib.quote_plus(app.config['APP_ID'])
+    r = ('https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + app_id +
+            '&redirect_uri=http%3A%2F%2Fieltspracticegroup.sinaapp.com%2Fweixin-auth-callback'
+            '&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect')
+    return redirect(r)
+
+'''
+https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa7a1e9b980782576&redirect_uri=http%3A%2F%2Fieltspracticegroup.sinaapp.com%2Fweixin_auth_callback&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect
+'''
+@app.route('/weixin-auth-callback')
+def weixin_auth_callback():
+    import urllib, httplib, json
+    code = urllib.quote_plus(request.args.get('code'))
+    # /ielts/weixin_auth_callback.php?state=%2Fielts%2F&code=authdeny&reason=
+    if not code or code == 'authdeny':
+        #_HH: TODO: 用户拒绝微信登录 flash(FlashMessage.LOGIN_FAILED)
+        return render_template('auth/login.html', form=LoginForm())
+    app_id = urllib.quote_plus(app.config['APP_ID'])
+    app_secret = urllib.quote_plus(app.config['APP_SECRET'])
+    url = ('/sns/oauth2/access_token?'
+           'appid=%s&secret=%s&code=%s&grant_type=authorization_code' %
+           (app_id, app_secret, code))
+    conn = httplib.HTTPSConnection('api.weixin.qq.com')
+    conn.request('GET', url)
+    response = conn.getresponse()
+    access_token_response = json.loads(response.read())
+    if access_token_response.has_key('errcode'):
+        #_HH: TODO: 微信登录失败 flash(FlashMessage.LOGIN_FAILED)
+        return render_template('auth/login.html', form=LoginForm())
+
+    openid = access_token_response['openid']
+    user = User.query.filter_by(openid1=openid).first()
+    if user is not None:
+        login_user(user)
+        r = request.args.get('next') or '/speaking'
+        if r == url_for('logout'): r = '/speaking'
+        return redirect(r)
+
+    access_token = access_token_response['access_token']
+    url = ('/sns/userinfo?access_token=%s&openid=%s&lang=zh_CN' %
+           (urllib.quote_plus(access_token), urllib.quote_plus(openid)))
+    conn = httplib.HTTPSConnection('api.weixin.qq.com')
+    conn.request('GET', url)
+    response = conn.getresponse()
+    user_info_response = json.loads(response.read())
+    if user_info_response.has_key('errcode'):
+        #_HH: TODO: 微信获取用户信息失败 flash(FlashMessage.LOGIN_FAILED)
+        return render_template('auth/login.html', form=LoginForm())
+
+    nickname = user_info_response['nickname']
+    headimgurl = user_info_response['headimgurl']
+    user = User(email='', nickname=nickname, openid1=openid, available_time=0)
+    db.session.add(user)
+    db.session.commit()
+    login_user(user)
+    flash(FlashMessage.REGISTER_SUCCESS)
+    return redirect('/profile')
+    # return render_template('auth/weixin_auth_callback.html', access_token=access_token)
 
 @app.route('/logout')
 @login_required
 def logout():
+    if current_user.is_weixin_user :
+         print 'logout ignored for weixin user'
+         return redirect(url_for('index'))
     logout_user()
     flash(FlashMessage.LOGGED_OUT)
     return redirect(url_for('index'))
