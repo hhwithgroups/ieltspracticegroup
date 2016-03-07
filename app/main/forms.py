@@ -2,17 +2,17 @@
 from flask.ext.wtf import Form
 from wtforms import StringField, SubmitField, SelectField, \
                     TextAreaField, BooleanField, FloatField
-from wtforms.validators import Required, Length, ValidationError
+from wtforms.validators import Required, Optional, Length, ValidationError
 from wtforms.fields.html5 import DateField
 from ..models import User, level
 
     
 class ProfileForm(Form):
-    qq = StringField('QQ', validators=[Length(0, 11)])
+    qq = StringField('QQ', validators=[Length(0, 11), Optional()])
     level = SelectField('Current Level', coerce=int, default=2, validators=[Required()])
-    target_score = FloatField('Target Score')
+    target_score = FloatField('Target Score', validators=[Optional()])
     exam_passed = BooleanField('I have passed my IELTS exam.')
-    date_of_exam = DateField('Date of Exam')
+    date_of_exam = DateField('Date of Exam', validators=[Optional()])
     description = TextAreaField('About Me')
     
     (mon_morning, mon_afternoon, mon_night,
@@ -53,9 +53,8 @@ class ProfileForm(Form):
             self.time_segments[i].data = ((value >> i) & 1 == 1)
 
     def validate_qq(self, field):
-        if not field.data:
-            return
         if not field.data.isdigit():
             raise ValidationError('QQ must be all numbers')
-        if User.query.filter_by(qq=field.data).first():
-            raise ValidationError('QQ number already in use.')
+        # Should not check this way, the QQ number is used by current user
+        # if User.query.filter_by(qq=field.data).first():
+        #     raise ValidationError('QQ number already in use.')
