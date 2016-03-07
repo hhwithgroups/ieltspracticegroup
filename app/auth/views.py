@@ -36,10 +36,14 @@ def register():
         db.session.add(user)
         db.session.commit()
         login_user(user)
+        _update_latest_login_date(user)
         flash(FlashMessage.REGISTER_SUCCESS)
         return redirect(url_for('index'))
     return render_template('auth/register.html', form=form)
 
+def _update_latest_login_date(user):
+    db.engine.execute('update users set latest_login_date=now()'
+            ' where id=%d' % user.id)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -48,6 +52,7 @@ def login():
         user = User.query.filter_by(email=form.email.data).first()
         if user is not None and user.verify_password(form.password.data):
             login_user(user, form.remember_me.data)
+            _update_latest_login_date(user)
             r = request.args.get('next') or url_for('index')
             if r == url_for('logout'):
                 r = url_for('index')
@@ -94,6 +99,7 @@ def weixin_auth_callback():
     user = User.query.filter_by(openid1=openid).first()
     if user is not None:
         login_user(user, True)
+        _update_latest_login_date(user)
         r = request.args.get('next') or '/speaking'
         if r == url_for('logout'): r = '/speaking'
         return redirect(r)
@@ -115,6 +121,7 @@ def weixin_auth_callback():
     db.session.add(user)
     db.session.commit()
     login_user(user, True)
+    _update_latest_login_date(user)
     flash(FlashMessage.REGISTER_SUCCESS)
     return redirect('/profile')
     # return render_template('auth/weixin_auth_callback.html', access_token=access_token)
