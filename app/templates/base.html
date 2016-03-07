@@ -8,6 +8,10 @@
 
 {% block title %}IELTS English Club{% endblock %}
 
+{%- block styles %}
+<link href="//lib.sinaapp.com/js/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" media="screen">
+{%- endblock styles %}
+
 {% block navbar %}
 <div class="navbar navbar-inverse" role="navigation">
 	<div class="container">
@@ -61,6 +65,7 @@
 {% endblock %}
 
 {% block scripts %}
-{{ super() }}
+<script src="//lib.sinaapp.com/js/jquery/1.10.2/jquery-1.10.2.min.js"></script>
+<script src="//lib.sinaapp.com/js/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 <img src="http://c.cnzz.com/wapstat.php?siteid=1257753183&r=" width="0" height="0"/>
 {% endblock %}
