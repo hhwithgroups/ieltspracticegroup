@@ -72,7 +72,7 @@ def weixin_login():
     return redirect(r)
 
 '''
-https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa7a1e9b980782576&redirect_uri=http%3A%2F%2Fieltspracticegroup.sinaapp.com%2Fweixin_auth_callback&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect
+https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa7a1e9b980782576&redirect_uri=http%3A%2F%2Fieltspracticegroup.sinaapp.com%2Fweixin-auth-callback&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect
 '''
 @app.route('/weixin-auth-callback')
 def weixin_auth_callback():
@@ -117,7 +117,8 @@ def weixin_auth_callback():
 
     nickname = user_info_response['nickname']
     headimgurl = user_info_response['headimgurl']
-    user = User(email='', nickname=nickname, openid1=openid, available_time=0)
+    user = User(email='', nickname=nickname, openid1=openid,
+            headimgurl=headimgurl, available_time=0)
     db.session.add(user)
     db.session.commit()
     login_user(user, True)

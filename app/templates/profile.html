@@ -13,6 +13,7 @@
 	<form method="POST" class="form" role="form">
 	{{ form.csrf_token }}
 	{{ wtf.form_field(form.qq) }}
+	{{ wtf.form_field(form.wechat_id) }}
 	{{ wtf.form_field(form.level) }}
 	{{ wtf.form_field(form.target_score) }}
 	{{ wtf.form_field(form.date_of_exam) }}

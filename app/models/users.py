@@ -67,7 +67,8 @@ class User(UserMixin, db.Model):
 
     # add wechat id
     openid1 = db.Column(db.String(40), default='')
-
+    wechat_id = db.Column(db.String(20))
+    headimgurl = db.Column(db.String(150))
 
     # a invitation sent from A to B
     sent_invitations = db.relationship('Invitation',

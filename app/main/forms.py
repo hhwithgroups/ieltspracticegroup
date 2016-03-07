@@ -9,6 +9,7 @@ from ..models import User, level
     
 class ProfileForm(Form):
     qq = StringField('QQ', validators=[Length(0, 11), Optional()])
+    wechat_id = StringField('WeChat ID', validators=[Length(0, 20), Optional()])
     level = SelectField('Current Level', coerce=int, default=2, validators=[Required()])
     target_score = FloatField('Target Score', validators=[Optional()])
     exam_passed = BooleanField('I have passed my IELTS exam.')
