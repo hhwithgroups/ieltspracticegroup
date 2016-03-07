@@ -93,7 +93,7 @@ def weixin_auth_callback():
     openid = access_token_response['openid']
     user = User.query.filter_by(openid1=openid).first()
     if user is not None:
-        login_user(user)
+        login_user(user, True)
         r = request.args.get('next') or '/speaking'
         if r == url_for('logout'): r = '/speaking'
         return redirect(r)
@@ -114,7 +114,7 @@ def weixin_auth_callback():
     user = User(email='', nickname=nickname, openid1=openid, available_time=0)
     db.session.add(user)
     db.session.commit()
-    login_user(user)
+    login_user(user, True)
     flash(FlashMessage.REGISTER_SUCCESS)
     return redirect('/profile')
     # return render_template('auth/weixin_auth_callback.html', access_token=access_token)
