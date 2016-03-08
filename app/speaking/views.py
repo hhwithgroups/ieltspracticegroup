@@ -77,42 +77,42 @@ def speaking_friends():
                            pagination=pagination)
 
 
-@app.route('/speaking/invite/<nickname>')
+@app.route('/speaking/invite/<id>')
 @login_required
-def speaking_invite(nickname):
-    result = current_user.invite(nickname)
+def speaking_invite(id):
+    result = current_user.invite(id)
     if result:
-        flash(FlashMessage.INVITE_SUCCESS % nickname)
+        flash(FlashMessage.INVITE_SUCCESS % result[1].nickname)
     else:
-        flash(FlashMessage.INVITE_FAIL % nickname)
+        flash(FlashMessage.INVITE_FAIL % id)
     return redirect(url_for('speaking_recommends'))
     
 
-@app.route('/speaking/accept/<nickname>')
+@app.route('/speaking/accept/<id>')
 @login_required
-def speaking_accept(nickname):
-    result = current_user.accept(nickname)
+def speaking_accept(id):
+    result = current_user.accept(id)
     if result:
-        flash(FlashMessage.ACCEPT_SUCCESS % nickname)
+        flash(FlashMessage.ACCEPT_SUCCESS % result[1].nickname)
     else:
-        flash(FlashMessage.ACCEPT_FAIL % nickname)
+        flash(FlashMessage.ACCEPT_FAIL % id)
     return redirect(url_for('speaking_invitation'))
 
 
-@app.route('/speaking/decline/<nickname>')
+@app.route('/speaking/decline/<id>')
 @login_required
-def speaking_decline(nickname):
-    result = current_user.decline(nickname)
+def speaking_decline(id):
+    result = current_user.decline(id)
     if result:
-        flash(FlashMessage.DECLINED % nickname)
+        flash(FlashMessage.DECLINED % result[1].nickname)
     return redirect(url_for('speaking_invitation'))
 
     
-@app.route('/speaking/delete/<nickname>')
+@app.route('/speaking/delete/<id>')
 @login_required
-def speaking_delete(nickname):
-    result = current_user.delete_friend(nickname)
+def speaking_delete(id):
+    result = current_user.delete_friend(id)
     if result:
-        flash(FlashMessage.DELETED % nickname)
+        flash(FlashMessage.DELETED % result[1].nickname)
     return redirect(url_for('speaking_friends'))
 

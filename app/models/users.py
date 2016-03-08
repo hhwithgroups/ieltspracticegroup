@@ -292,7 +292,7 @@ class User(UserMixin, db.Model):
 #         return Invitation.query.filter_by(from_user_id=self.id,
 #                                           invitation_date=date.today()).count()
 
-    def invite(self, nickname):
+    def invite(self, id):
         if self.last_invitation_date != date.today():
             self.last_invitation_date = date.today()
             self.today_invitation_cnt = 0
@@ -308,7 +308,7 @@ class User(UserMixin, db.Model):
             return False
 
         # 2. invited user is valid
-        user = User.query.filter_by(nickname=nickname).first()
+        user = User.query.filter_by(id=id).first()
         if user is None:
             return False
 
@@ -346,11 +346,11 @@ class User(UserMixin, db.Model):
         if recommendation is not None:
             db.session.delete(recommendation)
 
-        return True
+        return (True, user)
 
-    def accept(self, nickname):
+    def accept(self, id):
         # 1. inviting user is valid
-        user = User.query.filter_by(nickname=nickname).first()
+        user = User.query.filter_by(id=id).first()
         if user is None:
             return False
 
@@ -376,11 +376,11 @@ class User(UserMixin, db.Model):
             db.session.add(friend1)
             db.session.add(friend2)
 
-        return True
+        return (True, user)
 
-    def decline(self, nickname):
+    def decline(self, id):
         # 1. user is valid
-        user = User.query.filter_by(nickname=nickname).first()
+        user = User.query.filter_by(id=id).first()
         if user is None:
             return False
 
@@ -392,11 +392,11 @@ class User(UserMixin, db.Model):
 
         # 3. delete invitation
         db.session.delete(invitation)
-        return True
+        return (True, user)
 
-    def delete_friend(self, nickname):
+    def delete_friend(self, id):
         # 1. user is valid
-        user = User.query.filter_by(nickname=nickname).first()
+        user = User.query.filter_by(id=id).first()
         if user is None:
             return False
 
@@ -417,7 +417,7 @@ class User(UserMixin, db.Model):
         if friend2 is not None:
             db.session.delete(friend2)
 
-        return result
+        return (result, user)
 
     @staticmethod
     def generate_fake(count=100):

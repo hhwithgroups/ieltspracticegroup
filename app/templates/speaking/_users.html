@@ -38,8 +38,9 @@
 
 			{% if type=="friends" %}
 			<address>
-			<p><b>Email:</b> {{p[0].email}}</p>
-			<p><b>QQ:</b> {{p[0].qq}}</p>
+			{% if p[0].email %}<p><b>Email:</b> {{p[0].email}}</p>{% endif %}
+			{% if p[0].qq %}<p><b>QQ:</b> {{p[0].qq}}</p>{% endif %}
+			{% if p[0].wechat_id %}<p><b>WeChat ID:</b> {{p[0].wechat_id}}</p>{% endif %}
 			<p><b>Exam Date:</b> {{ p[0].date_of_exam }}</p>
 			</address>
 			{% endif %}
@@ -47,28 +48,30 @@
 			<div class="user-footer">
 			{% if type=="recommendation" %}
 				<a class="btn btn-success btn-xs"
-				   href="{{ url_for('speaking_invite', nickname=p[0].nickname) }}">
+				   href="{{ url_for('speaking_invite', id=p[0].id) }}">
 				   Invite
 				</a>
 			{% elif type=="invitation" %}
 				<a class="btn btn-success btn-xs"
-				   href="{{ url_for('speaking_accept', nickname=p[0].nickname) }}">
+				   href="{{ url_for('speaking_accept', id=p[0].id) }}">
 				   Accept
 				</a>
 				<a class="btn btn-danger btn-xs"
-				   href="{{ url_for('speaking_decline', nickname=p[0].nickname) }}">
+				   href="{{ url_for('speaking_decline', id=p[0].id) }}">
 				   Decline
 				</a>
 			{% elif type=="friends" %}
 				<a class="btn btn-danger btn-xs"
-				   href="{{ url_for('speaking_delete', nickname=p[0].nickname) }}">
+				   href="{{ url_for('speaking_delete', id=p[0].id) }}">
 				   Delete
 				</a>
 			{% endif %}
+				<!--
 				<a class="btn btn-danger btn-xs"
 				   href="#">
 				   Report
 				</a>
+				-->
 			</div>
 		</div>
 	</div>
