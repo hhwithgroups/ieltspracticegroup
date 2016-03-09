@@ -26,8 +26,11 @@ db = SQLAlchemy(app)
 bootstrap = Bootstrap(app)
 
 login_manager = LoginManager(app)
-login_manager.session_protection = 'strong'
 login_manager.login_view = '/login'
+
+# On SAE and mobile network, client IP and user-agent string often changes,
+# and 'strong' session_protection will fail.
+# login_manager.session_protection = 'strong'
 
 app.debug = True
 
