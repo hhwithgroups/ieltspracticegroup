@@ -69,7 +69,7 @@ def login():
 def weixin_login():
     if hasattr(current_user, 'id'):
         _update_latest_login_date(current_user)
-        return redirect('/speaking')
+        return redirect('/speaking/friends')
     import urllib
     app_id = urllib.quote_plus(app.config['APP_ID'])
     r = ('https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + app_id +
@@ -106,8 +106,8 @@ def weixin_auth_callback():
     if user is not None:
         login_user(user, True)
         _update_latest_login_date(user)
-        r = request.args.get('next') or '/speaking'
-        if r == url_for('logout'): r = '/speaking'
+        r = request.args.get('next') or '/speaking/friends'
+        if r == url_for('logout'): r = '/speaking/friends'
         return redirect(r)
 
     access_token = access_token_response['access_token']
