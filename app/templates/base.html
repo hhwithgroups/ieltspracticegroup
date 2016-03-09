@@ -15,7 +15,8 @@
 {% block navbar %}
 <div class="navbar navbar-inverse" role="navigation">
 	<div class="container">
-		<div class="navbar-header">
+		<div class="navbar-header" style="float: none;">
+			<!--
 			<button type="button" class="navbar-toggle"
 			data-toggle="collapse" data-target=".navbar-collapse">
 				<span class="sr-only">Toggle navigation</span>
@@ -23,13 +24,12 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
+			-->
 			<a class="navbar-brand" href="/">
 			<img  class="img-rounded profile-thumbnail"
 				  src="/static/favicon.ico" height="30" width="30">
 			</a>
-		</div>
-		<div class="navbar-collapse collapse">
-			<ul class="nav navbar-nav nav-pills">
+			<ul class="nav navbar-nav nav-pills" style="position: relative; float: left;">
 				<li><a href="{{ url_for('speaking') }}">Speaking</a></li>
 				<li><a href="{{ url_for('writing') }}">Writing</a></li>
 				{% if current_user.is_administrator() %}
@@ -37,16 +37,22 @@
 				{% endif %}
 			</ul>
 			{% if current_user.is_authenticated() %}
-				<ul class="nav navbar-nav navbar-right">
+				<ul class="nav navbar-nav nav-pills" style="position: relative; float: right; margin-right: 0;">
 					<li><a href="{{ url_for('profile') }}">
-						<img class="img-rounded profile-thumbnail"
+						<!img class="img-rounded profile-thumbnail"
 							 src = "{{ current_user.gravatar(size=25) }}">
 						{{ current_user.nickname }}
 					</a></li>
-					<li><a href="{{ url_for('logout') }}">Sign out</a></li>
+					{% if not current_user.is_weixin_user %}
+					  <li><a href="{{ url_for('logout') }}">Sign out</a></li>
+					{% endif %}
 				</ul>
 			{% endif %}
 		</div>
+		<!--
+		<div class="navbar-collapse collapse">
+		</div>
+		-->
 	</div>
 </div>
 {% endblock %}
