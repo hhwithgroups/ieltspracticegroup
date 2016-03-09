@@ -63,6 +63,7 @@ def login():
 @app.route('/weixin-login', methods=['GET', 'POST'])
 def weixin_login():
     if hasattr(current_user, 'id'):
+        _update_latest_login_date(current_user)
         return redirect('/speaking')
     import urllib
     app_id = urllib.quote_plus(app.config['APP_ID'])
