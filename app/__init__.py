@@ -39,3 +39,10 @@ from auth import views as auth_views
 from main import views as main_views
 from admin import views as admin_views
 from writing import views as writing_views
+
+@app.after_request
+def add_header(response):
+    response.cache_control.max_age = 0
+    # print response.content_type
+    # print response.cache_control
+    return response
