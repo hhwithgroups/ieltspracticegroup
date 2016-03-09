@@ -43,12 +43,16 @@ class Friend(db.Model):
     user1_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     user2_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
+class ActiveUser(db.Model):
+    __tablename__ = 'active_users'
+    id = db.Column(db.Integer, primary_key=True)
+    priority = db.Column(db.Integer, default=0)
 
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     nickname = db.Column(db.String(64))
-    email = db.Column(db.String(64), default='')
+    email = db.Column(db.String(64))
     qq = db.Column(db.String(32))
     qq_group = db.Column(db.String(32))
     level = db.Column(db.Integer)
@@ -66,9 +70,11 @@ class User(UserMixin, db.Model):
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
 
     # add wechat id
-    openid1 = db.Column(db.String(40), default='')
+    openid1 = db.Column(db.String(40))
     wechat_id = db.Column(db.String(20))
     headimgurl = db.Column(db.String(150))
+    modify_date = db.Column(db.Date, default=date.min)
+    latest_login_date = db.Column(db.Date, default=date.min)
 
     # a invitation sent from A to B
     sent_invitations = db.relationship('Invitation',
@@ -137,7 +143,7 @@ class User(UserMixin, db.Model):
 
     @property
     def is_weixin_user(self):
-        return self.openid1 != ''
+        return True if self.openid1 else False
 
     @property
     def password(self):
@@ -216,7 +222,8 @@ class User(UserMixin, db.Model):
         friends_ids = [i[0] for i in ids]
 
         # step 2
-        users = User.query.filter(~User.id.in_(invited_user_ids),
+        users = User.query.join(ActiveUser, ActiveUser.id==User.id) \
+                          .filter(~User.id.in_(invited_user_ids),
                                   ~User.id.in_(inviting_user_ids),
                                   ~User.id.in_(friends_ids),
                                   User.id != self.id,

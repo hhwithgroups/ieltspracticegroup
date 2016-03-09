@@ -5,7 +5,7 @@ from flask.ext.login import login_required, login_user, logout_user,\
                             current_user
 from .forms import RegisterForm, LoginForm, \
                    ResetPasswordRequestForm, ResetPasswordForm
-from ..models import User
+from ..models import User, ActiveUser
 from .. import app, db
 from ..email import send_email
 
@@ -44,6 +44,11 @@ def register():
 def _update_latest_login_date(user):
     db.engine.execute('update users set latest_login_date=now()'
             ' where id=%d' % user.id)
+    active_user = ActiveUser.query.filter_by(id=user.id).first()
+    if not active_user:
+        active_user = ActiveUser(id=user.id)
+        db.session.add(active_user)
+        db.session.commit()
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

@@ -2,7 +2,7 @@ __author__ = 'wei'
 
 
 from writing import Article, ArticleAnnotation, ArticleComment, WritingCategory, WritingTopic
-from users import User, Recommendation, Friend, Invitation, level
+from users import User, ActiveUser, Recommendation, Friend, Invitation, level
 from admin import Role, Permission
 
 from .. import login_manager
