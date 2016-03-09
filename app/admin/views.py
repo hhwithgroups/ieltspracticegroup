@@ -37,6 +37,7 @@ def admin_topics():
                                                  error_out=False)
         topics = pagination.items
     return render_template('/admin/topics.html',
+                           type='topics',
                            cat_form=cat_form, topic_form=topic_form,
                            categories=categories, current_category=current_category,
                            topics=topics,
@@ -105,3 +106,10 @@ def admin_del_topic(category_id, topic_id):
     db.session.add(topic)
     db.session.commit()
     return redirect(url_for('admin_topics', category_id=category_id))
+
+@app.route('/admin/users')
+@login_required
+@admin_required
+def admin_users():
+    return render_template('admin/base.html',
+                           type='users')

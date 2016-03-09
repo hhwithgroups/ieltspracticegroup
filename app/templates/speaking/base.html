@@ -10,19 +10,13 @@
 {% block page_content %}
 	<div class="page-header">
 		<ul class="nav nav-tabs">
-			{% if type=="friends" %}<li class="active">
-			{% else %}<li>
-			{% endif %}
+			<li {% if type=="friends" %} class="active" {% endif %}>
 				<a href="{{ url_for('speaking_friends') }}">Friends</a>
 			</li>
-			{% if type=="recommendation" %}<li class="active">
-			{% else %}<li>
-			{% endif %}
+			<li {% if type=="recommendation" %} class="active" {% endif %}>
 				<a href="{{ url_for('speaking_recommends') }}">Recommendation</a>
 			</li>
-			{% if type=="invitation" %}<li class="active">
-			{% else %}<li>
-			{% endif %}
+			<li {% if type=="invitation" %} class="active" {% endif %}>
 				<a href="{{ url_for('speaking_invitation') }}">Invitation</a>
 			</li>
 		</ul>

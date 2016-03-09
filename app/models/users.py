@@ -465,11 +465,13 @@ class User(UserMixin, db.Model):
             else:
                 user_added += 1
 
-    def assign_admin(self):
+    '''
+    def assign_admin(self): # disable this first
         admin_role = Role.query.filter_by(name='Administrator').first()
         self.role_id = admin_role.id
         db.session.add(self)
         db.session.commit()
+    '''
 
 class AnonymousUser(AnonymousUserMixin):
     def can(self, permissions):

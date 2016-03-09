@@ -12,10 +12,11 @@
 {% block page_content %}
 	<div class="page-header">
 		<ul class="nav nav-tabs">
-			{% if type=="topics" %}<li class="active">
-			{% else %}<li>
-			{% endif %}
-				<a href="{{ url_for('admin_topics') }}">Topic</a>
+			<li {% if type=="topics" %} class="active" {% endif %}>
+				<a href="{{ url_for('admin_topics') }}">Topics</a>
+			</li>
+			<li {% if type=="users" %} class="active" {% endif %}>
+				<a href="{{ url_for('admin_users') }}">Users</a>
 			</li>
 		</ul>
 	</div>
