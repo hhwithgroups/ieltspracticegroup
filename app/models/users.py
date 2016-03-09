@@ -157,6 +157,14 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
     def gravatar(self, size=100, default='monsterid', rating='g'):
+        headimgurl = self.headimgurl
+        # http://wx.qlogo.cn/mmopen/Ie7hL.../0
+        # 用户头像，最后一个数值代表正方形头像大小（有0、46、64、96、132数值可选，
+        # 0代表640*640正方形头像）
+        if headimgurl:
+            if headimgurl.endswith('/0'):
+                headimgurl = headimgurl[:-2] + '/46'
+            return headimgurl
         if request.is_secure:
             url = 'https://secure.gravatar.com/avatar'
         else:
