@@ -9,7 +9,7 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from .. import db, app, login_manager
 from .writing import Article, ArticleComment, ArticleAnnotation
 from .admin import Permission, Role
-from datetime import date
+from datetime import date, datetime
 import hashlib
 
 
@@ -42,6 +42,7 @@ class Friend(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user1_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     user2_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    timestamp = db.Column(db.DateTime, default=datetime.now)
 
 class ActiveUser(db.Model):
     __tablename__ = 'active_users'
