@@ -1,0 +1,38 @@
+{% extends "admin/base.html" %}
+
+{% block admin_content %}
+
+<label>Recent Login Users:</label>
+<table class="table table-responsive">
+  {% for row in login_users %}
+    <tr>
+      {% for f in row -%}
+        <td>{% if f %}{{ f }}{% endif %}</td>
+      {%- endfor %}
+    </tr>
+  {% endfor %}
+</table>
+
+<label>Recent New Friends:</label>
+<table class="table table-responsive">
+  {% for row in friends %}
+    <tr>
+      {% for f in row -%}
+        <td>{% if f %}{{ f }}{% endif %}</td>
+      {%- endfor %}
+    </tr>
+  {% endfor %}
+</table>
+
+<label>Recent Invitations:</label>
+<table class="table table-responsive">
+  {% for row in invitations %}
+    <tr>
+      {% for f in row -%}
+        <td>{% if f %}{{ f }}{% endif %}</td>
+      {%- endfor %}
+    </tr>
+  {% endfor %}
+</table>
+
+{% endblock %}

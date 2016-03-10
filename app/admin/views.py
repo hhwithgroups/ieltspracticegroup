@@ -111,5 +111,24 @@ def admin_del_topic(category_id, topic_id):
 @login_required
 @admin_required
 def admin_users():
-    return render_template('admin/base.html',
-                           type='users')
+    login_users = db.session.query('id', 'nickname', 'qq', 'wechat_id', 'latest_login_date').from_statement(
+        db.text('select id, nickname, qq, wechat_id, latest_login_date'
+                ' from users'
+                " where latest_login_date > '2016-03-01'"
+                ' order by latest_login_date desc limit 20')).all()
+    friends = db.session.query('nickname', 'nickname2', 'timestamp').from_statement(
+        db.text('select A.nickname, B.nickname as nickname2, friends.timestamp'
+                ' from friends join users A on user1_id=A.id'
+                ' join users B on user2_id=B.id'
+                ' where user1_id>user2_id'
+                ' order by friends.timestamp desc limit 10')).all()
+    invitations = db.session.query('nickname', 'nickname2', 'invitation_date').from_statement(
+        db.text('select A.nickname, B.nickname as nickname2, invitation_date'
+                ' from invitations join users A on from_user_id=A.id'
+                ' join users B on to_user_id=B.id'
+                ' order by invitation_date desc limit 20')).all()
+    return render_template('admin/users.html',
+                           type='users',
+                           login_users=login_users,
+                           friends=friends,
+                           invitations=invitations)
