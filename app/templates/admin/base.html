@@ -2,11 +2,6 @@
 {% import "_macros.html" as macros %}
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% block head %}
-	{{ super() }}
-	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='admin.css') }}">
-{% endblock %}
-
 {% block title %}IELTS English Club - Admin{% endblock %}
 
 {% block page_content %}
