@@ -111,11 +111,22 @@ def admin_del_topic(category_id, topic_id):
 @login_required
 @admin_required
 def admin_users():
-    login_users = db.session.query('id', 'nickname', 'qq', 'wechat_id', 'latest_login_date').from_statement(
+    login_users = db.session.query('latest_login_date', 'id', 'nickname', 'qq', 'wechat_id').from_statement(
         db.text('select id, nickname, qq, wechat_id, latest_login_date'
                 ' from users'
                 " where latest_login_date > '2016-03-01'"
                 ' order by latest_login_date desc limit 20')).all()
+    rows = []
+    for row in login_users:
+        row = list(row)
+        wechat_id = row.pop()
+        qq = row.pop()
+        nickname = row.pop()
+        if qq: nickname = nickname + ' | qq: ' + qq
+        if wechat_id: nickname = nickname + ' | wechat: ' + wechat_id
+        row.append(nickname)
+        rows.append(row)
+    login_users = rows
     friends = db.session.query('nickname', 'nickname2', 'timestamp').from_statement(
         db.text('select A.nickname, B.nickname as nickname2, friends.timestamp'
                 ' from friends join users A on user1_id=A.id'
