@@ -43,6 +43,7 @@ class Friend(db.Model):
     user1_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     user2_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     timestamp = db.Column(db.DateTime, default=datetime.now)
+    should_notify = db.Column(db.Boolean, default=False)
 
 class ActiveUser(db.Model):
     __tablename__ = 'active_users'
@@ -387,7 +388,7 @@ class User(UserMixin, db.Model):
         f1 = Friend.query.filter_by(user1_id=user.id, user2_id=self.id).first()
         f2 = Friend.query.filter_by(user1_id=self.id, user2_id=user.id).first()
         if f1 is None and f2 is None:
-            friend1 = Friend(user1_id=user.id, user2_id=self.id)
+            friend1 = Friend(user1_id=user.id, user2_id=self.id, should_notify=True)
             friend2 = Friend(user1_id=self.id, user2_id=user.id)
             db.session.add(friend1)
             db.session.add(friend2)
