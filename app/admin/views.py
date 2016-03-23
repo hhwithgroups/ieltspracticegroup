@@ -111,19 +111,29 @@ def admin_del_topic(category_id, topic_id):
 @login_required
 @admin_required
 def admin_users():
-    login_users = db.session.query('latest_login_date', 'id', 'nickname', 'qq', 'wechat_id').from_statement(
-        db.text('select id, nickname, qq, wechat_id, latest_login_date'
+    login_users = db.session.query('latest_login_date', 'id', 'nickname', 'qq', 'wechat_id', 'available_time').from_statement(
+        db.text('select id, nickname, qq, wechat_id, latest_login_date, available_time'
                 ' from users'
                 " where latest_login_date > '2016-03-01'"
                 ' order by latest_login_date desc limit 20')).all()
     rows = []
     for row in login_users:
         row = list(row)
+        available_time = row.pop()
         wechat_id = row.pop()
         qq = row.pop()
         nickname = row.pop()
         if qq: nickname = nickname + ' | qq: ' + qq
         if wechat_id: nickname = nickname + ' | wechat: ' + wechat_id
+        if available_time:
+            s = ''
+            for i in range(21):
+                if i != 0 and (i % 3) == 0:
+                    # if s.endswith('000'): s = s[:-2]
+                    s += ','
+                s += str((available_time >> i) & 1)
+            # if s.endswith('000'): s = s[:-2]
+            nickname = nickname + ' (' + s + ')'
         row.append(nickname)
         rows.append(row)
     login_users = rows
