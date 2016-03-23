@@ -15,6 +15,7 @@
 		</div>
 		{% endif %}
 	{% else %}
-	Sorry, we could not find any friends to recommend to you.
+	  <p>Sorry, we could not find any friends to recommend to you.</p>
+	  <p>Indicate your available time in the <a href="{{ url_for('profile') }}">Profile</a> page first.</p>
 	{% endif %}	
 {% endblock %}
