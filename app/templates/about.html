@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}IELTS English Club - About{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+	<h1>找伙伴流程</h1>
+</div>
+
+<ol>
+  <li><a href="{{ url_for('profile') }}">登记个人信息</a></li>
+  <li>找到系统<a href="{{ url_for('speaking_recommends') }}">自动推荐的伙伴清单</a></li>
+  <li>发出邀请</li>
+  <li>对方接受邀请后，在<a href="{{ url_for('speaking_friends') }}">好友</a>里找到对方的联系方式，开始练习</li>
+</ol>
+{% endblock %}

@@ -130,7 +130,7 @@ def weixin_auth_callback():
     login_user(user, True)
     _update_latest_login_date(user)
     flash(FlashMessage.REGISTER_SUCCESS)
-    return redirect('/profile')
+    return redirect('/about')
     # return render_template('auth/weixin_auth_callback.html', access_token=access_token)
 
 @app.route('/logout')

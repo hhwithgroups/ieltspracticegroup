@@ -15,7 +15,6 @@ class FlashMessage:
 def index():
     return redirect(url_for('writing'))
 
-
 @app.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
@@ -43,6 +42,9 @@ def profile():
     form.available_times = current_user.available_time
     return render_template('profile.html', form=form)
 
+@app.route('/about', methods=['GET', 'POST'])
+def about():
+    return render_template('about.html')
 
 @app.route('/shutdown')
 def server_shutdown():
