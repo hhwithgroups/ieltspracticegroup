@@ -1,6 +1,13 @@
 #!/usr/bin/env python
 
 import os
+import sys
+absolute_path = os.path.abspath(__file__)
+app_path = os.path.dirname(absolute_path)
+path = os.path.join(app_path, 'libs')
+sys.path.insert(0, path)
+sys.path.insert(0, app_path)
+
 COV = None
 if os.environ.get('FLASK_COVERAGE'):
     import coverage
@@ -12,10 +19,10 @@ from app.models import User, Invitation, Recommendation, Friend
 from app.models import Article, ArticleComment, ArticleAnnotation, WritingCategory, WritingTopic
 from app.models import Role, Permission
 from flask.ext.script import Manager, Shell
-from flask.ext.migrate import Migrate, MigrateCommand
+# from flask.ext.migrate import Migrate, MigrateCommand
 
 manager = Manager(app)
-migrate = Migrate(app, db)
+# migrate = Migrate(app, db)
 
 def make_shell_context():
     return dict(app=app, db=db,
@@ -26,7 +33,7 @@ def make_shell_context():
                 Permission=Permission)
 
 manager.add_command("shell", Shell(make_context=make_shell_context))
-manager.add_command("db", MigrateCommand)
+# manager.add_command("db", MigrateCommand)
 
 @manager.command
 def test(coverage=False):

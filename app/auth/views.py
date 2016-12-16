@@ -73,7 +73,7 @@ def weixin_login():
     import urllib
     app_id = urllib.quote_plus(app.config['APP_ID'])
     r = ('https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + app_id +
-            '&redirect_uri=http%3A%2F%2Fieltspracticegroup.sinaapp.com%2Fweixin-auth-callback'
+            '&redirect_uri=http%3A%2F%2Fieltspracticegroup.connectinghometown.com%2Fweixin-auth-callback'
             '&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect')
     return redirect(r)
 
