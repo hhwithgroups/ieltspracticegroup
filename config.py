@@ -1,5 +1,5 @@
 import os
-import sae.const
+# import sae.const
 
 class Config:
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
@@ -26,11 +26,11 @@ class Config:
 class ProductConfig(Config):
     SECRET_KEY = 'O6T70gazj6kInjlRgj4DlWpSdmSy4jws'
     SQLALCHEMY_DATABASE_URI = 'mysql://%s:%s@%s:%s/%s' % \
-                                 (sae.const.MYSQL_USER,
-                                  sae.const.MYSQL_PASS,
-                                  sae.const.MYSQL_HOST,
-                                  sae.const.MYSQL_PORT,
-                                  sae.const.MYSQL_DB,)
+                                ('ielts',
+                                 'password',
+                                 'localhost',
+                                 '3306',
+                                 'ieltspracticegroup',)
       
 class DebugConfig(Config):
     DEBUG = True
